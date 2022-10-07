@@ -64,10 +64,10 @@ api:
     port: 4000
 
     # Defaults to "ClusterIP"
-    # type: NodePort
+    type: NodePort
 
     ## Only valid if service.type equals "NodePort"
-    # nodePort: 30700
+    nodePort: 30700
 
   readinessProbe:
     periodSeconds: 5
@@ -87,8 +87,11 @@ api:
   ingress:
     ingressClassName: nginx
     labels: {}
-    annotations: {}
-      # kubernetes.io/tls-acme: "true"
+    annotations: {
+      nginx.ingress.kubernetes.io/enable-cors: "true",
+      nginx.ingress.kubernetes.io/cors-allow-origin: "*",
+      nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, PUT, DELETE, HEAD, OPTIONS"
+    }
     hosts:
       - host: api.chart-example.local
         path: /
@@ -153,10 +156,10 @@ dashboard:
     port: 8080
 
     # Defaults to "ClusterIP"
-    # type: NodePort
+    type: NodePort
 
     ## Only valid if service.type equals "NodePort"
-    # nodePort: 30710
+    nodePort: 30710
 
   # Set annotations for pods
   podAnnotations: {}
@@ -171,7 +174,11 @@ dashboard:
     enabled: true
     ingressClassName: nginx
     labels: {}
-    annotations: {}
+    annotations: {
+      nginx.ingress.kubernetes.io/enable-cors: "true",
+      nginx.ingress.kubernetes.io/cors-allow-origin: "*",
+      nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, PUT, DELETE, HEAD"
+    }
       # kubernetes.io/tls-acme: "true"
     hosts:
       - host: dashboard.chart-example.local
@@ -254,7 +261,7 @@ director:
     # Valid options are:
     # "../execution/in-memory"
     # "../execution/mongo/driver"
-    executionDriver: "../execution/in-memory"
+    executionDriver: "../execution/mongo/driver"
 
     # Dummy or S3
     # Valid options are:
@@ -278,10 +285,10 @@ director:
     port: 1234
 
     # Defaults to "ClusterIP"
-    # type: NodePort
+    type: NodePort
 
     ## Only valid if service.type equals "NodePort"
-    # nodePort: 30720
+    nodePort: 30720
 
   ingress:
     enabled: true
